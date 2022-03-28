@@ -1,0 +1,15 @@
+name = "myx-growth-api"
+type = "javascript"
+account_id = "2e9f97f1a861b38318870fd6d5bc9c4a"
+workers_dev = true
+compatibility_date = "2022-03-28"
+kv_namespaces = [
+  { binding = "MYS_GROWTH", id = "7bc36ea0983d4bdebbe0d3c89bd8a423", preview_id = "" },
+]
+
+[triggers]
+crons = ["0 */2 * * *"]
+[build]
+command = "npm run build"
+[build.upload]
+format = "service-worker"
