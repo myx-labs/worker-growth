@@ -1,5 +1,5 @@
 {
-  "name": "myx-opencollective-worker",
+  "name": "myx-growth-api",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@cloudflare/workers-types": "^3.4.0",
-    "esbuild": "^0.14.28",
-    "miniflare": "^2.3.0"
+    "esbuild": "^0.14.36",
+    "miniflare": "^2.4.0"
   }
 }

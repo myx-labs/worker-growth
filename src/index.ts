@@ -1,8 +1,10 @@
 const robloxURL = "https://groups.roblox.com/v1/groups/1143446";
 
-const verifyDataIntegrity = (data) => {
+type DateMemberItem = [string, number, boolean?];
+
+const verifyDataIntegrity = (data: string | DateMemberItem[]) => {
   if (typeof data === "string") {
-    data = JSON.parse(data);
+    data = JSON.parse(data) as DateMemberItem[];
   }
   if (Array.isArray(data)) {
     if (data.length > 0) {
@@ -50,13 +52,13 @@ async function getNewDataArray(response: Response, dateTimestamp: Date) {
     const memberCount = parseInt(json.memberCount);
     if (memberCount) {
       const dateString = dateTimestamp.toISOString().substring(0, 10);
-      const record = [dateString, memberCount];
+      const record: DateMemberItem = [dateString, memberCount];
       let data = await getCache();
       if (!verifyDataIntegrity(data)) {
         data = await getLastGoodBackup();
       }
       if (verifyDataIntegrity(data)) {
-        const parsedData: any[] = JSON.parse(data);
+        const parsedData: DateMemberItem[] = JSON.parse(data);
         // Only add a new record if it doesnt exist for the given date already
         const recordExists = parsedData.some(
           (value: any) => value[0] === dateString
@@ -113,16 +115,29 @@ addEventListener("scheduled", (event) => {
 
 async function handleFetch(event: FetchEvent) {
   const data = await getCache();
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
+  };
   console.log(data);
   if (verifyDataIntegrity(data)) {
-    return new Response(data);
+    return new Response(data, {
+      headers: headers,
+    });
   } else {
     const backup = await getLastGoodBackup();
     if (verifyDataIntegrity(backup)) {
-      return new Response(backup);
+      return new Response(backup, {
+        headers: headers,
+      });
+    } else {
+      await handleSchedule(new Date().getTime());
+      const cache = await getCache();
+      return new Response(cache, {
+        headers: headers,
+      });
     }
   }
-  throw new Error("Data integrity error");
 }
 
 addEventListener("fetch", (event) => {
