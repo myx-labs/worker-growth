@@ -2,23 +2,26 @@ const robloxURL = "https://groups.roblox.com/v1/groups/1143446";
 
 type DateMemberItem = [string, number, boolean?];
 
-const verifyDataIntegrity = (data: string | DateMemberItem[]) => {
-  if (typeof data === "string") {
-    data = JSON.parse(data) as DateMemberItem[];
-  }
-  if (Array.isArray(data)) {
-    if (data.length > 0) {
-      if (typeof data[0][0] === "string" && typeof data[0][1] === "number") {
+const verifyDataIntegrity = (data: string | DateMemberItem[] | null) => {
+  if (data !== null) {
+    if (typeof data === "string") {
+      data = JSON.parse(data) as DateMemberItem[];
+    }
+    if (Array.isArray(data)) {
+      if (data.length > 0) {
+        if (typeof data[0][0] === "string" && typeof data[0][1] === "number") {
+          return true;
+        }
+      } else {
         return true;
       }
-    } else {
-      return true;
     }
   }
+
   return false;
 };
 
-const setCache = (data) => {
+const setCache = (data: string) => {
   if (verifyDataIntegrity(data)) {
     return MYS_GROWTH.put("data", data);
   } else {
@@ -28,7 +31,7 @@ const setCache = (data) => {
 
 const getCache = () => MYS_GROWTH.get("data");
 
-const setLastGoodBackup = (data) => {
+const setLastGoodBackup = (data: string) => {
   if (verifyDataIntegrity(data)) {
     return MYS_GROWTH.put("last_good_backup", data);
   } else {
@@ -38,7 +41,7 @@ const setLastGoodBackup = (data) => {
 
 const getLastGoodBackup = () => MYS_GROWTH.get("last_good_backup");
 
-async function backup(data) {
+async function backup(data: string) {
   const key = "data";
   const backupKey = `backup_${key}_${new Date().toISOString()}`;
   return MYS_GROWTH.put(backupKey, data);
@@ -57,7 +60,7 @@ async function getNewDataArray(response: Response, dateTimestamp: Date) {
       if (!verifyDataIntegrity(data)) {
         data = await getLastGoodBackup();
       }
-      if (verifyDataIntegrity(data)) {
+      if (data && verifyDataIntegrity(data)) {
         const parsedData: DateMemberItem[] = JSON.parse(data);
         // Only add a new record if it doesnt exist for the given date already
         const recordExists = parsedData.some(
