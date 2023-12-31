@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",
-    "esbuild": "^0.19.10",
+    "esbuild": "^0.19.11",
     "miniflare": "^3.20231030.4",
     "wrangler": "^3.22.1"
   }
