@@ -11,9 +11,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20231218.0",
+    "@cloudflare/workers-types": "^4.20240117.0",
     "esbuild": "^0.19.11",
-    "miniflare": "^3.20231218.1",
-    "wrangler": "^3.22.3"
+    "miniflare": "^3.20231218.2",
+    "wrangler": "^3.22.5"
   }
 }
