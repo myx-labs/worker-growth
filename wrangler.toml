@@ -2,7 +2,7 @@ name = "myx-growth-api"
 main = "./dist/index"
 account_id = "2e9f97f1a861b38318870fd6d5bc9c4a"
 workers_dev = true
-compatibility_date = "2024-03-18"
+compatibility_date = "2024-04-03"
 kv_namespaces = [
   { binding = "MYS_GROWTH", id = "7bc36ea0983d4bdebbe0d3c89bd8a423", preview_id = "" },
 ]
